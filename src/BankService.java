@@ -1,13 +1,20 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BankService {
 
     BigDecimal totalBalance;
 
-   void createAccount (String accountNumber, BigDecimal balance, User owner, List<Transaction> transactions ){      // создает новый счет для пользователя
-       BankAccount newAccount = new BankAccount (accountNumber, balance, owner, transactions);
-       owner.getAccounts().add(newAccount);
+   // ArrayList<BankAccount> bankAccounts= new ArrayList<>();
+    //   bankAccounts.add(acc1);
+     //   bankAccounts.add(acc2);
+    //    bankAccounts.add(acc3);
+
+
+   void createAccount (User user, String accountNumber) {              // создает новый счет для пользователя
+       BankAccount newAccount = new BankAccount(accountNumber, BigDecimal.ZERO, user, new ArrayList<Transaction>());
+       user.addAccount(newAccount);
    }
 
    void transfer(BankAccount source, BankAccount target, BigDecimal amount) {        // переводит средства между счетами (с проверкой на достаточность средств)
@@ -19,10 +26,16 @@ public class BankService {
        }
    }
 
-    void getTransactionHistory(BankAccount account){                                 // возвращает историю транзакций для указанного счета
+    public List<Transaction> getTransactionHistory(BankAccount account){
+      return account.transactions;                                                        // возвращает историю транзакций для указанного счета
     }
 
-    void getTotalBalance(User user){                                                 // возвращает общий баланс всех счетов пользователя
+    public BigDecimal getTotalBalance(User user) {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (BankAccount account : user.getAccounts()) {
+            sum = sum.add(account.getBalance());
+        }
+        return sum;
     }
 }
 

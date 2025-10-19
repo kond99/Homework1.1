@@ -11,13 +11,14 @@ public class User {
         this.accounts = accounts;
     }
 
-    public void addAccount(BankAccount account) {     // добавление нового счета пользователю
-        for (int i = 0; i<3; i++);
+    public void addAccount(BankAccount account) {  // добавление нового счёта пользователю
         accounts.add(account);
     }
 
     public List<BankAccount> getAccounts() {
         return accounts;                              // возвращает список счетов пользователя
     }
+
+
 }
 
