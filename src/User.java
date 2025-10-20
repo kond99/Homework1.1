@@ -1,24 +1,33 @@
+import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 public class User {
-    String id;                    // уникальный идентификатор пользователя
-    String name;                  // имя пользователя
-    List<BankAccount> accounts;   // список счетов пользователя, это список объектов класса BankAccount
+    private String id;                    // уникальный идентификатор пользователя
+    private String name;                  // имя пользователя
+    private List<BankAccount> accounts;   // список счетов пользователя, это список объектов класса BankAccount
 
     public User(String id, String name, List<BankAccount> accounts) {
         this.id = id;
         this.name = name;
-        this.accounts = accounts;
+        this.accounts = new ArrayList<>(accounts);
     }
 
-    public void addAccount(BankAccount account) {  // добавление нового счёта пользователю
+    public List<BankAccount> getAccounts(){
+        return Collections.unmodifiableList(accounts);   // Возвращает "замороженный" список
+    }
+
+        public void addAccount(BankAccount account) {  // добавление нового счёта пользователю
         accounts.add(account);
     }
 
-    public List<BankAccount> getAccounts() {
-        return accounts;                              // возвращает список счетов пользователя
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", accounts=" + accounts +
+                '}';
     }
-
-
 }
 

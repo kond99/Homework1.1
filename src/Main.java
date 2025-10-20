@@ -3,14 +3,12 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Создаём пользователя.
-        User user = new User ("user1", "John Doe", new ArrayList<BankAccount>() );
 
-        // Создаём сервис.
-        BankService bankService = new BankService();
+        User user = new User ("user1", "John Doe", new ArrayList<BankAccount>() );        // Создаём пользователя.
 
-        // Создаём счета.
-        bankService.createAccount(user,"ACC123");
+        BankService bankService = new BankService();                  // Создаём сервис.
+
+        bankService.createAccount(user,"ACC123");        // Создаём счета.
         bankService.createAccount(user,"ACC456");
 
         List<BankAccount> accounts = user.getAccounts();   // Получаем счета пользователя
@@ -19,7 +17,7 @@ public class Main {
 
         acc1.deposit(new BigDecimal("1000"));          // Пополняем счёт №1
 
-        bankService.transfer(acc1, acc2, new BigDecimal("100"));    // Переводим средства между счетами
+        bankService.transfer(acc1, acc2, new BigDecimal("150"));    // Переводим средства между счетами
 
         System.out.println("Баланс счёта ACC123: " + acc1.getBalance());  // Выводим балансы
         System.out.println("Баланс счёта ACC456: " + acc2.getBalance());

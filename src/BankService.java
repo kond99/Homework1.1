@@ -4,30 +4,38 @@ import java.util.List;
 
 public class BankService {
 
-    BigDecimal totalBalance;
-
-   // ArrayList<BankAccount> bankAccounts= new ArrayList<>();
-    //   bankAccounts.add(acc1);
-     //   bankAccounts.add(acc2);
-    //    bankAccounts.add(acc3);
-
+    private BigDecimal totalBalance;
 
    void createAccount (User user, String accountNumber) {              // создает новый счет для пользователя
-       BankAccount newAccount = new BankAccount(accountNumber, BigDecimal.ZERO, user, new ArrayList<Transaction>());
+       if (user == null) {
+           throw new IllegalArgumentException("User не может быть null!");
+       }
+       if (accountNumber == null || accountNumber.trim().isEmpty()) {
+           throw new IllegalArgumentException("accountNumber не может быть пустым!");
+       }
+       BankAccount newAccount = new BankAccount(accountNumber,
+                                BigDecimal.ZERO, user,
+                                new ArrayList<Transaction>());
        user.addAccount(newAccount);
    }
 
-   void transfer(BankAccount source, BankAccount target, BigDecimal amount) {        // переводит средства между счетами (с проверкой на достаточность средств)
-       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-           throw new IllegalArgumentException("Сумма перевода должна быть положительной!");  // проверка суммы перевода
-       }
-       if (source.getBalance().compareTo(amount) <= 0) {
-           throw new IllegalArgumentException("Недостаточно средств на счёте отправителя!"); // проверка достаточности суммы на счёте отправителя
-       }
-   }
+    void transfer(BankAccount source, BankAccount target, BigDecimal amount) {
+        if (source == null || target == null) {
+            throw new IllegalArgumentException("Оба счета должны быть указаны!");
+        }
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Сумма перевода должна быть положительной!");
+        }
+        if (source.getBalance().compareTo(amount) < 0) {
+            throw new IllegalArgumentException("Недостаточно средств на счете отправителя!");
+        }
+        // все проверки пройдены - теперь меняем балансы
+        source.withdraw(amount); // вычитание в методе withdraw()
+        target.deposit(amount);  // прибавление в методе deposit()
+    }
 
     public List<Transaction> getTransactionHistory(BankAccount account){
-      return account.transactions;                                                        // возвращает историю транзакций для указанного счета
+      return account.getTransactions();                                                        // возвращает историю транзакций для указанного счета
     }
 
     public BigDecimal getTotalBalance(User user) {
